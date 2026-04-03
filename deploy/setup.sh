@@ -41,7 +41,11 @@ pip install -r requirements.txt --quiet
 # 5. Create .env if not exists
 if [ ! -f ".env" ]; then
     cp .env.example .env
-    echo "Created .env from .env.example — edit API_KEY before running!"
+    API_KEY=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
+    sed -i "s/change-me-to-a-secure-random-string/$API_KEY/" .env
+    echo "Created .env with auto-generated API_KEY"
+    echo "API_KEY: $API_KEY"
+    echo "⚠ 이 키를 학교 서버에도 설정하세요!"
 fi
 
 echo ""
