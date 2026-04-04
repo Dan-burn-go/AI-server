@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     # 공유 httpx 클라이언트 (커넥션 풀링)
     app.state.http_client = httpx.AsyncClient(
         base_url=settings.ollama_base_url,
-        timeout=120.0,
+        timeout=httpx.Timeout(120.0, read=300.0),
     )
     yield
     await app.state.http_client.aclose()
